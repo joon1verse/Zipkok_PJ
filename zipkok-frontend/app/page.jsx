@@ -66,6 +66,19 @@ export default function Home() {
       setResults(filtered);
     }
   }, [query, minPrice, maxPrice, selectedTypes]);
+  
+  // 🆕 1️⃣8️⃣ Daum API에서 데이터 가져오기
+  useEffect(() => {
+    fetch("/api/daum")
+      .then((res) => res.json())
+      .then((data) => {
+        setResults(data);        // 받아온 게시글 저장
+        setShowResults(true);    // 검색 없이도 결과 표시
+      })
+      .catch((err) => {
+        console.error("데이터 로딩 실패:", err);
+      });
+  }, []);
 
   // 6️⃣ 검색 실행 핸들러
   const handleSearch = () => {
