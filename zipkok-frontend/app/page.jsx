@@ -5,69 +5,30 @@ import { useTranslation } from "react-i18next";
 import { initReactI18next } from "react-i18next";
 import i18n from "i18next";
 import { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import Header from "../components/header.jsx";
 
 const resources = {
-  en: {
-    translation: {
-      title: "Zipkok",
-      slogan: "Stop searching everywhere.\nDiscover Canadian room listings all in one place.",
-      description: "Search rental listings from multiple Canadian websites in one place.",
-      placeholder: "Search by city or neighborhood...",
-      search: "Search",
-      resultTitle: "Search Results for",
-      noResult: "No listings found.",
-      sort: "Sort"
-    }
-  },
-  kr: {
-    translation: {
-      title: "집콕",
-      slogan: "더 이상 힘들게 찾지 마세요.\n캐나다의 쉐어하우스, 홈스테이 정보를 한 곳에서!",
-      description: "캐나다 여러 웹사이트의 렌트 리스트를 한곳에서 검색하세요.",
-      placeholder: "도시 또는 지역으로 검색...",
-      search: "검색",
-      resultTitle: "\"{{query}}\"의 검색 결과",
-      noResult: "검색 결과가 없습니다.",
-      sort: "정렬"
-    }
-  },
-  jp: {
-    translation: {
-      title: "ジプコク",
-      slogan: "面倒な部屋探しは、もう終わり。\nカナダのルームシェア情報を一箇所で確認！",
-      description: "複数のカナダのウェブサイトから賃貸情報を一括検索。",
-      placeholder: "都市または地域で検索...",
-      search: "検索",
-      resultTitle: "「{{query}}」の検索結果",
-      noResult: "検索結果がありません。",
-      sort: "並び替え"
-    }
-  }
+  en: { translation: { title: "Zipkok", slogan: "Stop searching everywhere.\nDiscover Canadian room listings all in one place.", description: "Search rental listings from multiple Canadian websites in one place.", placeholder: "Search by city or neighborhood...", search: "Search", resultTitle: "Search Results for", noResult: "No listings found." } },
+  kr: { translation: { title: "집콕", slogan: "더 이상 힘들게 찾지 마세요.\n캐나다의 쉐어하우스, 홈스테이 정보를 한 곳에서!", description: "캐나다 여러 웹사이트의 렌트 리스트를 한곳에서 검색하세요.", placeholder: "도시 또는 지역으로 검색...", search: "검색", resultTitle: "\"{{query}}\"의 검색 결과", noResult: "검색 결과가 없습니다." } },
+  jp: { translation: { title: "ジプコク", slogan: "面倒な部屋探しは、もう終わり。\nカナダのルームシェア情報を一箇所で確認！", description: "複数のカナダのウェブサイトから賃貸情報を一括検索。", placeholder: "都市または地域で検索...", search: "検索", resultTitle: "「{{query}}」の検索結果", noResult: "検索結果がありません。" } }
 };
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "en",
-  interpolation: { escapeValue: false }
-});
+i18n.use(initReactI18next).init({ resources, lng: "en", interpolation: { escapeValue: false } });
 
 export default function Home() {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   // 2️⃣ 상태 변수 정의
   const [input, setInput] = useState("");
-  const [query, setQuery] = useState(searchParams.get("q") || "");
+  const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
-  const [minPrice, setMinPrice] = useState(searchParams.get("min") || "");
-  const [maxPrice, setMaxPrice] = useState(searchParams.get("max") || "");
-  const [selectedTypes, setSelectedTypes] = useState(searchParams.getAll("type") || []);
-  const [sortOrder, setSortOrder] = useState(searchParams.get("sort") || "default");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); // 1️⃣6️⃣ 페이징 상태
+  const itemsPerPage = 15;
 
   // 3️⃣ 도시 리스트 (자동완성용)
   const cityList = [
@@ -83,81 +44,39 @@ export default function Home() {
     { name: "Kitchener", province: "ON" }
   ];
 
-  const langClass = {
-    en: "font-inter",
-    kr: "font-noto-kr",
-    jp: "font-noto-jp"
-  }[i18n.language] || "font-inter";
-
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-  };
+  const langClass = { en: "font-inter", kr: "font-noto-kr", jp: "font-noto-jp" }[i18n.language] || "font-inter";
+  const changeLanguage = (lang) => i18n.changeLanguage(lang);
 
   // 4️⃣ 게시물 더미 데이터 (이미지 포함)
   const dummyData = [
-    {
-      id: 1,
-      title: "Toronto Downtown 쉐어하우스",
-      location: "Toronto",
-      price: "$700",
-      priceValue: 700,
-      type: "House",
-      image: "/images/toronto.jpg"
-    },
-    {
-      id: 2,
-      title: "Burnaby 넓은 하우스",
-      location: "Burnaby",
-      price: "$850",
-      priceValue: 850,
-      type: "Apartment",
-      image: "/images/vancouver.jpg"
-    },
-    {
-      id: 3,
-      title: "Vancouver Homestay",
-      location: "Vancouver",
-      price: "$950",
-      priceValue: 950,
-      type: "Condo",
-      image: "/images/default.jpg"
-    }
+    { id: 1, title: "Toronto Downtown 쉐어하우스", location: "Toronto", price: "$700", priceValue: 700, type: "House", image: "/images/toronto.jpg" },
+    { id: 2, title: "Burnaby 넓은 하우스", location: "Burnaby", price: "$850", priceValue: 850, type: "Apartment", image: "/images/vancouver.jpg" },
+    { id: 3, title: "Vancouver Homestay", location: "Vancouver", price: "$950", priceValue: 950, type: "Condo", image: "/images/default.jpg" }
   ];
 
-  // 5️⃣ 검색 결과 필터링 및 정렬
+  // 5️⃣ 필터 포함 검색 결과 필터링
   useEffect(() => {
     if (query) {
       let filtered = dummyData.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query.toLowerCase()) ||
-          item.location.toLowerCase().includes(query.toLowerCase())
+        (item) => item.title.toLowerCase().includes(query.toLowerCase()) || item.location.toLowerCase().includes(query.toLowerCase())
       );
       if (minPrice) filtered = filtered.filter((item) => item.priceValue >= parseInt(minPrice));
       if (maxPrice) filtered = filtered.filter((item) => item.priceValue <= parseInt(maxPrice));
       if (selectedTypes.length > 0) filtered = filtered.filter((item) => selectedTypes.includes(item.type));
-      if (sortOrder === "price-asc") filtered.sort((a, b) => a.priceValue - b.priceValue);
-      if (sortOrder === "price-desc") filtered.sort((a, b) => b.priceValue - a.priceValue);
       setResults(filtered);
     }
-  }, [query, minPrice, maxPrice, selectedTypes, sortOrder]);
+  }, [query, minPrice, maxPrice, selectedTypes]);
 
-  // 6️⃣ 검색 실행 핸들러 (쿼리스트링 반영)
+  // 6️⃣ 검색 실행 핸들러
   const handleSearch = () => {
     const trimmed = input.trim();
-    const params = new URLSearchParams();
-    params.set("q", trimmed);
-    if (minPrice) params.set("min", minPrice);
-    if (maxPrice) params.set("max", maxPrice);
-    selectedTypes.forEach((type) => params.append("type", type));
-    if (sortOrder && sortOrder !== "default") params.set("sort", sortOrder);
-    router.push("/?" + params.toString());
     setQuery(trimmed);
     setShowResults(true);
     setSuggestions([]);
-    setCurrentPage(1);
+    setCurrentPage(1); // 1️⃣6️⃣ 페이지 초기화
   };
 
-  // 7️⃣ 검색 초기화 핸들러
+  // 7️⃣ 검색 결과 초기화 핸들러
   const handleBack = () => {
     setShowResults(false);
     setInput("");
@@ -165,14 +84,10 @@ export default function Home() {
     setCurrentPage(1);
   };
 
-  // 8️⃣ 정렬 옵션
-  const sortOptions = [
-    { value: "default", label: "Default" },
-    { value: "price-asc", label: "Price: Low to High" },
-    { value: "price-desc", label: "Price: High to Low" }
-  ];
+  const pagedResults = results.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const totalPages = Math.ceil(results.length / itemsPerPage);
 
-  // 9️⃣ 클립보드 공유 링크 복사
+  // 1️⃣5️⃣ 공유 링크 복사 핸들러
   const handleCopyLink = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl).then(() => {
@@ -180,11 +95,88 @@ export default function Home() {
     });
   };
 
-  // 🔟 페이징 상태
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
-  const pagedResults = results.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-  const totalPages = Math.ceil(results.length / itemsPerPage);
+  return (
+    <div className={`min-h-screen bg-gray-50 ${langClass}`}>
+      <Header changeLanguage={changeLanguage} langClass={langClass} />
 
-  // 👉 나머지 UI는 동일하게 유지됨 (입력창, 필터 UI, 결과 표시, 공유 버튼, 정렬 셀렉트박스, 페이지네이션 등)
+      <main className="container mx-auto py-12">
+        {!showResults ? (
+          <section className="text-center px-4">
+            {/* 8️⃣ 검색 소개 문구 */}
+            <h2 className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight" style={{ lineHeight: "2" }}>{t("slogan")}</h2>
+            <p className="text-gray-600 mb-8 leading-relaxed">{t("description")}</p>
+
+            {/* 공유 버튼 */}
+            <div className="mb-4">
+              <button onClick={handleCopyLink} className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 text-sm">🔗 링크 복사</button>
+            </div>
+
+            {/* 9️⃣ 검색창 + 자동완성 드롭다운 */}
+            {/* ... 생략된 기존 검색창, 필터 UI, 검색 버튼 ... */}
+          </section>
+        ) : (
+          <section className="px-4">
+            {/* 1️⃣2️⃣ 결과 헤더 및 뒤로가기 */}
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold">{t("resultTitle", { query })}</h2>
+              <button onClick={handleBack} className="text-sm text-indigo-600 underline">← Back</button>
+            </div>
+
+            {/* 1️⃣3️⃣ 검색 결과 */}
+            {results.length === 0 ? (
+              <p className="text-gray-500">{t("noResult")}</p>
+            ) : (
+              <>
+                <div className="grid gap-4">
+                  {pagedResults.map((item) => (
+                    <div key={item.id} className="bg-white rounded-lg shadow p-4 flex gap-4">
+                      <img src={item.image} alt={item.title} className="w-32 h-24 object-cover rounded-md border border-gray-200" />
+                      <div>
+                        <h3 className="text-lg font-semibold">{item.title}</h3>
+                        <p className="text-gray-600">{item.location}</p>
+                        <p className="text-indigo-500 font-medium">{item.price}</p>
+                        <p className="text-sm text-gray-400">{item.type}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 1️⃣6️⃣ 페이지네이션 컨트롤 */}
+                <div className="flex justify-center items-center gap-2 mt-6">
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 rounded border bg-white disabled:opacity-30"
+                  >
+                    이전
+                  </button>
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`px-3 py-1 rounded border ${currentPage === i + 1 ? "bg-indigo-500 text-white" : "bg-white"}`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 rounded border bg-white disabled:opacity-30"
+                  >
+                    다음
+                  </button>
+                </div>
+              </>
+            )}
+          </section>
+        )}
+      </main>
+
+      {/* 1️⃣4️⃣ 푸터 */}
+      <footer className="bg-white py-4 text-center shadow-inner">
+        <p className="text-gray-500">&copy; 2025 Zipkok. All rights reserved.</p>
+      </footer>
+    </div>
+  );
 }
