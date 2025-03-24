@@ -58,7 +58,9 @@ export default function Home() {
       <header className="bg-white shadow-sm">
         <nav className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
           <div className="w-full flex justify-between items-center">
-            <h1 className="text-left text-3xl font-semibold text-indigo-700 tracking-tight font-serif">{t('title')}</h1>
+            <h1 className={`text-left text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
+              {t('title')}
+            </h1>
             <div className="flex gap-2 items-center text-sm md:text-base">
               <button className="px-2" onClick={() => changeLanguage('kr')}>🇰🇷 한국어</button>
               <span className="text-gray-300">|</span>
