@@ -98,11 +98,6 @@ export default function Home() {
             <h2 className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight" style={{ lineHeight: "2" }}>{t("slogan")}</h2>
             <p className="text-gray-600 mb-8 leading-relaxed">{t("description")}</p>
 
-            {/* 공유 버튼 */}
-            <div className="mb-4">
-              <button onClick={handleCopyLink} className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 text-sm">🔗 링크 복사</button>
-            </div>
-
             {/* 9️⃣ 검색창 + 자동완성 드롭다운 */}
              <div className="relative max-w-xl mx-auto">
                <input
