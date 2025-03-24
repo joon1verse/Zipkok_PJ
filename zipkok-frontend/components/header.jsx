@@ -6,18 +6,17 @@ export default function Header({ changeLanguage, langClass }) {
   const { t } = useTranslation();
 
   return (
-    <header className="bg-white shadow-sm py-4 z-50 relative">
+    <header className="bg-white shadow-sm py-4 z-50 relative" tabIndex={-1}>
       <nav className="container mx-auto flex justify-between items-center px-4 md:px-8">
-
-        {/* ✅ 타이틀 링크 - 클릭 완벽 작동 */}
-        <Link href="/" className="cursor-pointer z-50">
-          <div className={`text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
+        
+        {/* ✅ 확실히 작동하는 링크 */}
+        <Link href="/" legacyBehavior>
+          <a className={`text-3xl font-semibold text-indigo-700 tracking-tight ${langClass} cursor-pointer`}>
             {t("title")}
-          </div>
+          </a>
         </Link>
 
-        {/* 언어 버튼 */}
-        <div className="flex items-center gap-3 z-40">
+        <div className="flex items-center gap-3">
           {["kr", "jp", "en"].map((lang) => (
             <button
               key={lang}
