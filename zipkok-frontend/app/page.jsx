@@ -102,7 +102,7 @@ export default function Home() {
         <section className="text-center px-4">
 <h2
   className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight"
-  style={{ lineHeight: '2.25' }}
+  style={{ lineHeight: '2' }}
 >
   {t('slogan')}
 </h2>
