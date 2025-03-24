@@ -100,7 +100,7 @@ export default function Home() {
         <nav className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
           <div className="w-full flex justify-between items-center">
             <Link href="/">
-              <h1 className={`cursor-pointer text-left text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
+              <h1 className="cursor-pointer text-3xl font-semibold text-indigo-700">
                 {t('title')}
               </h1>
             </Link>
