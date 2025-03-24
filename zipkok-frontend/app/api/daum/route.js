@@ -1,4 +1,6 @@
 // 1️⃣7️⃣ Daum 크롤링 API
+export const runtime = 'nodejs'; // 👈 이 줄 추가 (Edge → Node.js 전환)
+
 import { NextResponse } from "next/server";
 import axios from "axios";
 import * as cheerio from "cheerio";
