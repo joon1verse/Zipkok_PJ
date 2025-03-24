@@ -156,11 +156,11 @@ export default function Home() {
                <div className="grid grid-cols-2 gap-4 mb-4">
                  <div>
                    <label className="block text-sm font-medium text-gray-700">Min Price</label>
-                   <input type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="ex) 600" />
+                   <input type="number" min="0" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="ex) 600" />
                  </div>
                  <div>
                    <label className="block text-sm font-medium text-gray-700">Max Price</label>
-                   <input type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="ex) 1000" />
+                   <input type="number" min="0" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="ex) 1000" />
                  </div>
                </div>
                <div>
