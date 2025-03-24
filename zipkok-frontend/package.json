@@ -13,8 +13,8 @@
   "react-dom": "^18.2.0",
   "react-i18next": "^13.0.1",
   "i18next": "^23.0.0",
-  "axios": "^1.4.0",           // ✅ 안정적으로 최신까지 호환됨
-  "cheerio": "1.0.0-rc.10"     // ✅ 반드시 고정 버전 (rc.12 이상은 Vercel에서 충돌)
+  "axios": "^1.4.0",
+  "cheerio": "1.0.0-rc.10"
 },
   "devDependencies": {
   "tailwindcss": "^3.4.1",
