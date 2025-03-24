@@ -100,12 +100,12 @@ export default function Home() {
 
       <main className="container mx-auto py-12">
         <section className="text-center px-4">
-          <h2 className="whitespace-pre-line text-3xl md:text-4xl font-semibold text-gray-800 mb-4 mt-4">
-            {t('slogan')}
-          </h2>
-          <p className="text-gray-600 mb-8">
-            {t('description')}
-          </p>
+<h2 className="whitespace-pre-line text-3xl md:text-4xl font-semibold text-gray-800 mb-4 leading-relaxed">
+  {t('slogan')}
+</h2>
+<p className="text-gray-600 mb-8 leading-relaxed">
+  {t('description')}
+</p>
           <div className="max-w-xl mx-auto">
             <input
               type="text"
