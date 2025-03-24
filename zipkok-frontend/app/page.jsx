@@ -190,9 +190,6 @@ export default function Home() {
            </section>
          ) : (
            <section className="px-4">
-          </section>
-        ) : (
-          <section className="px-4">
             {/* 1️⃣2️⃣ 결과 헤더 및 뒤로가기 */}
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold">{t("resultTitle", { query })}</h2>
