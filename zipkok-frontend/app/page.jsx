@@ -183,6 +183,13 @@ export default function Home() {
                  </div>
                </div>
              </div>
+            {/* 1️⃣1️⃣ 검색 버튼 */}
+             <button onClick={handleSearch} className="mt-6 w-full max-w-xl mx-auto rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg">
+               {t("search")}
+             </button>
+           </section>
+         ) : (
+           <section className="px-4">
           </section>
         ) : (
           <section className="px-4">
