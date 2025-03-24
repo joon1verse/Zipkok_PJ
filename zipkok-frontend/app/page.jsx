@@ -55,19 +55,25 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
-      <header className="bg-white shadow-sm">
+      <header className="bg-white shadow-sm py-6">
         <nav className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
           <div className="w-full flex justify-between items-center">
             <h1 className={`text-left text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
               {t('title')}
             </h1>
-            <div className="flex gap-2 items-center text-sm md:text-base">
-              <button className="px-2" onClick={() => changeLanguage('kr')}>🇰🇷 한국어</button>
-              <span className="text-gray-300">|</span>
-              <button className="px-2" onClick={() => changeLanguage('jp')}>🇯🇵 日本語</button>
-              <span className="text-gray-300">|</span>
-              <button className="px-2" onClick={() => changeLanguage('en')}>🇬🇧 English</button>
-            </div>
+              <div className="flex gap-2 items-center text-sm md:text-base">
+               <button className="flex items-center gap-1 px-2" onClick={() => changeLanguage('kr')}>
+                <span className="text-xl">🇰🇷</span> 한국어
+               </button>
+                <span className="text-gray-300">|</span>
+               <button className="flex items-center gap-1 px-2" onClick={() => changeLanguage('jp')}>
+                <span className="text-xl">🇯🇵</span> 日本語
+               </button>
+                <span className="text-gray-300">|</span>
+               <button className="flex items-center gap-1 px-2" onClick={() => changeLanguage('en')}>
+                <span className="text-xl">🇬🇧</span> English
+        </button>
+      </div>
           </div>
         </nav>
 
@@ -79,7 +85,7 @@ export default function Home() {
 
       <main className="container mx-auto py-12">
         <section className="text-center px-4">
-          <h2 className="whitespace-pre-line text-3xl md:text-4xl font-semibold text-gray-800 mb-4">
+          <h2 className="whitespace-pre-line text-3xl md:text-4xl font-semibold text-gray-800 mb-4 mt-4">
             {t('slogan')}
           </h2>
           <p className="text-gray-600 mb-8">
