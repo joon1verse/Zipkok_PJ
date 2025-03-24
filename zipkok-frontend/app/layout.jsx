@@ -1,13 +1,14 @@
-// zipkok-frontend/app/layout.jsx
 export const metadata = {
-  title: 'Zipkok',
-  description: 'Your multilingual room rental platform',
+  title: 'Zipkok - Find Your Perfect Room',
+  description: 'A multilingual room rental platform',
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="font-sans bg-white text-black">
+        {children}
+      </body>
     </html>
   )
 }
