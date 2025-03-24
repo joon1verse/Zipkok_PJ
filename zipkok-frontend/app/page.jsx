@@ -118,26 +118,48 @@ export default function Home() {
               {t("description")}
             </p>
 
-            <div className="max-w-xl mx-auto">
-              <input
-                list="city-options"
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleSearch();
-                  }
-                }}
-                placeholder={t("placeholder")}
-                className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
-              />
-              <datalist id="city-options">
-                {cityList.map((city) => (
-                  <option key={city} value={city} />
-                ))}
-              </datalist>
+            <div className="relative max-w-xl mx-auto">
+  <input
+    type="text"
+    value={input}
+    onChange={(e) => {
+      const value = e.target.value;
+      setInput(value);
+
+      const filtered = cityList.filter((city) =>
+        city.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setSuggestions(filtered);
+    }}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        setSuggestions([]);
+        handleSearch();
+      }
+    }}
+    placeholder={t("placeholder")}
+    className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
+  />
+
+  {/* 자동완성 드롭다운 */}
+  {suggestions.length > 0 && (
+    <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow absolute w-full z-10 max-h-48 overflow-y-auto">
+      {suggestions.map((city) => (
+        <li
+          key={city}
+          onClick={() => {
+            setInput(city);
+            setSuggestions([]);
+          }}
+          className="px-4 py-2 hover:bg-indigo-100 cursor-pointer"
+        >
+          {city}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
 
               <button
                 onClick={handleSearch}
