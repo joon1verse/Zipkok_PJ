@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 import { useState, useEffect } from 'react';
-import Header from '../components/Header'; // ✅ 헤더 컴포넌트 불러오기
+import Header from '../components/header.jsx'; // ✅ 헤더 컴포넌트 불러오기
 
 // 다국어 리소스
 const resources = {
