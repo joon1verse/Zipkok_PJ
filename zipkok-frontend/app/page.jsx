@@ -145,21 +145,23 @@ export default function Home() {
               />
 
               {suggestions.length > 0 && (
-                <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow absolute w-full z-10 max-h-48 overflow-y-auto">
-                  {suggestions.map((city) => (
-                    <li
-                      key={city}
-                      onClick={() => {
-                        setInput(city);
-                        setSuggestions([]);
-                      }}
-                      className="px-4 py-2 hover:bg-indigo-100 cursor-pointer"
-                    >
-                      {city}
-                    </li>
-                  ))}
-                </ul>
-              )}
+  <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow absolute w-full z-10 max-h-48 overflow-y-auto">
+    {suggestions.map((city, index) => (
+      <li
+        key={city}
+        onClick={() => {
+          setInput(city);
+          setSuggestions([]);
+        }}
+        className={`px-4 py-2 text-left hover:bg-indigo-100 cursor-pointer ${
+          index < suggestions.length - 1 ? "border-b border-gray-200" : ""
+        }`}
+      >
+        {city}
+      </li>
+    ))}
+  </ul>
+)}
             </div>
 
             <button
