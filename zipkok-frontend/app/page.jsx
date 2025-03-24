@@ -2,8 +2,9 @@
 import { useTranslation } from 'react-i18next';
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
+import { useState, useEffect } from 'react';
 
-// Translation resources
+// 다국어 리소스
 const resources = {
   en: {
     translation: {
@@ -11,7 +12,9 @@ const resources = {
       slogan: "Stop searching everywhere.\nDiscover Canadian room listings all in one place.",
       description: "Search rental listings from multiple Canadian websites in one place.",
       placeholder: "Search by city or neighborhood...",
-      search: "Search"
+      search: "Search",
+      resultTitle: "Search Results for",
+      noResult: "No listings found."
     }
   },
   kr: {
@@ -20,7 +23,9 @@ const resources = {
       slogan: "더 이상 힘들게 찾지 마세요.\n캐나다의 쉐어하우스, 홈스테이 정보를 한 곳에서!",
       description: "캐나다 여러 웹사이트의 렌트 리스트를 한곳에서 검색하세요.",
       placeholder: "도시 또는 지역으로 검색...",
-      search: "검색"
+      search: "검색",
+      resultTitle: '"{{query}}"의 검색 결과',
+      noResult: "검색 결과가 없습니다."
     }
   },
   jp: {
@@ -29,7 +34,9 @@ const resources = {
       slogan: "面倒な部屋探しは、もう終わり。\nカナダのルームシェア情報を一箇所で確認！",
       description: "複数のカナダのウェブサイトから賃貸情報を一括検索。",
       placeholder: "都市または地域で検索...",
-      search: "検索"
+      search: "検索",
+      resultTitle: "「{{query}}」の検索結果",
+      noResult: "検索結果がありません。"
     }
   }
 };
@@ -42,10 +49,10 @@ i18n.use(initReactI18next).init({
 
 export default function Home() {
   const { t, i18n } = useTranslation();
-
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-  };
+  const [input, setInput] = useState("");
+  const [query, setQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const [results, setResults] = useState([]);
 
   const langClass = {
     en: 'font-inter',
@@ -53,75 +60,108 @@ export default function Home() {
     jp: 'font-noto-jp'
   }[i18n.language] || 'font-inter';
 
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+  };
+
+  const dummyData = [
+    { id: 1, title: "Toronto Downtown 쉐어하우스", location: "Toronto", price: "$700" },
+    { id: 2, title: "Burnaby 넓은 하우스", location: "Burnaby", price: "$850" },
+    { id: 3, title: "Vancouver Homestay", location: "Vancouver", price: "$950" }
+  ];
+
+  useEffect(() => {
+    if (query) {
+      const filtered = dummyData.filter(item =>
+        item.title.toLowerCase().includes(query.toLowerCase()) ||
+        item.location.toLowerCase().includes(query.toLowerCase())
+      );
+      setResults(filtered);
+    }
+  }, [query]);
+
+  const handleSearch = () => {
+    if (input.trim() === "") return;
+    setQuery(input.trim());
+    setShowResults(true);
+  };
+
+  const handleBack = () => {
+    setShowResults(false);
+    setInput("");
+    setQuery("");
+  };
+
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
+      {/* 헤더 */}
       <header className="bg-white shadow-sm py-4">
         <nav className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
           <div className="w-full flex justify-between items-center">
             <h1 className={`text-left text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
               {t('title')}
             </h1>
-
-<div className="flex flex-wrap justify-center items-center gap-3 py-4">
-  <button
-    className="flex items-center gap-2 px-3 py-1 rounded-md bg-white hover:bg-gray-100 border border-gray-200 text-sm md:text-base font-medium transition"
-    onClick={() => changeLanguage('kr')}
-  >
-    <span className="text-xl leading-none">🇰🇷</span>
-    <span>한국어</span>
-  </button>
-
-  <button
-    className="flex items-center gap-2 px-3 py-1 rounded-md bg-white hover:bg-gray-100 border border-gray-200 text-sm md:text-base font-medium transition"
-    onClick={() => changeLanguage('jp')}
-  >
-    <span className="text-xl leading-none">🇯🇵</span>
-    <span>日本語</span>
-  </button>
-
-  <button
-    className="flex items-center gap-2 px-3 py-1 rounded-md bg-white hover:bg-gray-100 border border-gray-200 text-sm md:text-base font-medium transition"
-    onClick={() => changeLanguage('en')}
-  >
-    <span className="text-xl leading-none">🇬🇧</span>
-    <span>English</span>
-  </button>
-</div>
-
-            
+            <div className="flex flex-wrap justify-center items-center gap-3 py-4">
+              <button onClick={() => changeLanguage('kr')} className="lang-btn">🇰🇷 한국어</button>
+              <button onClick={() => changeLanguage('jp')} className="lang-btn">🇯🇵 日本語</button>
+              <button onClick={() => changeLanguage('en')} className="lang-btn">🇬🇧 English</button>
+            </div>
           </div>
         </nav>
-
-        <div className="container mx-auto py-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="h-24 bg-gray-200 rounded-lg flex items-center justify-center">광고 영역 #1</div>
-          <div className="h-24 bg-gray-200 rounded-lg flex items-center justify-center">광고 영역 #2</div>
-        </div>
       </header>
 
+      {/* 메인 또는 검색 결과 */}
       <main className="container mx-auto py-12">
-        <section className="text-center px-4">
-<h2
-  className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight"
-  style={{ lineHeight: '2' }}
->
-  {t('slogan')}
-</h2>
-<p className="text-gray-600 mb-8 leading-relaxed">
-  {t('description')}
-</p>
-          <div className="max-w-xl mx-auto">
-            <input
-              type="text"
-              placeholder={t('placeholder')}
-              className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
-            />
-            <button className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg">
-              {t('search')}
-            </button>
-          </div>
-        </section>
+        {!showResults ? (
+          // 🔍 검색 페이지
+          <section className="text-center px-4">
+            <h2 className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight" style={{ lineHeight: '2' }}>
+              {t('slogan')}
+            </h2>
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              {t('description')}
+            </p>
+            <div className="max-w-xl mx-auto">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={t('placeholder')}
+                className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
+              />
+              <button
+                onClick={handleSearch}
+                className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg"
+              >
+                {t('search')}
+              </button>
+            </div>
+          </section>
+        ) : (
+          // 📄 결과 페이지
+          <section className="px-4">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold">{t('resultTitle', { query })}</h2>
+              <button onClick={handleBack} className="text-sm text-indigo-600 underline">← Back</button>
+            </div>
+            {results.length === 0 ? (
+              <p className="text-gray-500">{t('noResult')}</p>
+            ) : (
+              <div className="grid gap-4">
+                {results.map(item => (
+                  <div key={item.id} className="bg-white rounded-lg shadow p-4">
+                    <h3 className="text-lg font-semibold">{item.title}</h3>
+                    <p className="text-gray-600">{item.location}</p>
+                    <p className="text-indigo-500 font-medium">{item.price}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
       </main>
 
+      {/* 푸터 */}
       <footer className="bg-white py-4 text-center shadow-inner">
         <p className="text-gray-500">&copy; 2025 Zipkok. All rights reserved.</p>
       </footer>
