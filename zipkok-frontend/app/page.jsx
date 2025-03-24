@@ -1,5 +1,10 @@
 "use client";
 
+const cityList = [
+  "Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa",
+  "Edmonton", "Winnipeg", "Quebec City", "Hamilton", "Kitchener"
+];
+
 import { useTranslation } from 'react-i18next';
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
@@ -83,9 +88,9 @@ export default function Home() {
   }, [query]);
 
   const handleSearch = () => {
-    if (input.trim() === "") return;
-    setQuery(input.trim());
-    setShowResults(true);
+  const trimmed = input.trim();
+  setQuery(trimmed);
+  setShowResults(true);
   };
 
   const handleBack = () => {
@@ -111,16 +116,31 @@ export default function Home() {
             </p>
             <div className="max-w-xl mx-auto">
               <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={t('placeholder')}
-                className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
-              />
+  list="city-options"
+  type="text"
+  value={input}
+  onChange={(e) => setInput(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearch(); // 🔥 엔터로 검색 실행
+    }
+  }}
+  placeholder={t('placeholder')}
+  className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
+/>
+
+<datalist id="city-options">
+  {cityList.map((city) => (
+    <option key={city} value={city} />
+  ))}
+</datalist>
               <button
-                onClick={handleSearch}
-                className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg"
-              >
+  onClick={handleSearch}
+  className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg"
+>
+  {t('search')}
+</button>
                 {t('search')}
               </button>
             </div>
