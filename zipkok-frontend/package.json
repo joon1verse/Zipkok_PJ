@@ -12,7 +12,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.0.1",
-    "i18next": "^23.0.0"
+    "i18next": "^23.0.0",
+    "axios": "^1.x.x",
+    "cheerio": "^1.x.x"
   },
   "devDependencies": {
   "tailwindcss": "^3.4.1",
