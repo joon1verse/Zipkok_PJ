@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 // 다국어 리소스
 const resources = {
