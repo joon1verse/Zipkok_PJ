@@ -55,25 +55,55 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
-      <header className="bg-white shadow-sm py-6">
+      <header className="bg-white shadow-sm py-4">
         <nav className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
           <div className="w-full flex justify-between items-center">
             <h1 className={`text-left text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
               {t('title')}
             </h1>
+
               <div className="flex gap-2 items-center text-sm md:text-base">
-               <button className="flex items-center gap-1 px-2" onClick={() => changeLanguage('kr')}>
-                <span className="text-xl">🇰🇷</span> 한국어
-               </button>
-                <span className="text-gray-300">|</span>
-               <button className="flex items-center gap-1 px-2" onClick={() => changeLanguage('jp')}>
-                <span className="text-xl">🇯🇵</span> 日本語
-               </button>
-                <span className="text-gray-300">|</span>
-               <button className="flex items-center gap-1 px-2" onClick={() => changeLanguage('en')}>
-                <span className="text-xl">🇬🇧</span> English
-        </button>
-      </div>
+  <button
+    className="flex items-center gap-1 px-2"
+    onClick={() => changeLanguage('kr')}
+  >
+    <img
+      src="https://twemoji.maxcdn.com/v/latest/svg/1f1f0-1f1f7.svg"
+      alt="kr"
+      className="w-5 h-5"
+    />
+    한국어
+  </button>
+
+  <span className="text-gray-300">|</span>
+
+  <button
+    className="flex items-center gap-1 px-2"
+    onClick={() => changeLanguage('jp')}
+  >
+    <img
+      src="https://twemoji.maxcdn.com/v/latest/svg/1f1ef-1f1f5.svg"
+      alt="jp"
+      className="w-5 h-5"
+    />
+    日本語
+  </button>
+
+  <span className="text-gray-300">|</span>
+
+  <button
+    className="flex items-center gap-1 px-2"
+    onClick={() => changeLanguage('en')}
+  >
+    <img
+      src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg"
+      alt="en"
+      className="w-5 h-5"
+    />
+    English
+  </button>
+</div>
+            
           </div>
         </nav>
 
