@@ -203,7 +203,19 @@ export default function Home() {
               <>
                 <div className="grid gap-4">
                   {pagedResults.map((item) => (
-                    <div key={item.id} className="bg-white rounded-lg shadow p-4 flex gap-4">
+                    <div key={item.id} className="relative bg-white rounded-lg shadow p-4 flex gap-4">
+                      {/* 🔗 개별 공유 버튼 */}         // <-- 이 줄부터 추가
+                        <button
+                          onClick={() => {
+                            const shareUrl = `${window.location.origin}/share/${item.id}`;
+                            navigator.clipboard.writeText(shareUrl).then(() => {
+                              alert("🔗 게시물 링크가 복사되었습니다!");
+                            });
+                          }}
+                          className="absolute top-2 right-2 text-xs bg-gray-100 px-2 py-1 rounded hover:bg-gray-200"
+                        >
+                          공유
+                        </button>
                       <img src={item.image} alt={item.title} className="w-32 h-24 object-cover rounded-md border border-gray-200" />
                       <div>
                         <h3 className="text-lg font-semibold">{item.title}</h3>
@@ -214,6 +226,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+                
 
                 {/* 1️⃣6️⃣ 페이지네이션 컨트롤 */}
                 <div className="flex justify-center items-center gap-2 mt-6">
