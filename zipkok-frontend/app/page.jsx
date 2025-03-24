@@ -19,7 +19,7 @@ const resources = {
   },
   kr: {
     translation: {
-      title: "집콕",
+      title: "집콕 - Zipkok",
       slogan: "더 이상 힘들게 찾지 마세요.\n캐나다의 쉐어하우스, 홈스테이 정보를 한 곳에서!",
       description: "캐나다 여러 웹사이트의 렌트 리스트를 한곳에서 검색하세요.",
       placeholder: "도시 또는 지역으로 검색...",
@@ -30,7 +30,7 @@ const resources = {
   },
   jp: {
     translation: {
-      title: "ジプコク",
+      title: "ジプコク - Zipkok",
       slogan: "面倒な部屋探しは、もう終わり。\nカナダのルームシェア情報を一箇所で確認！",
       description: "複数のカナダのウェブサイトから賃貸情報を一括検索。",
       placeholder: "都市または地域で検索...",
@@ -98,9 +98,11 @@ export default function Home() {
       <header className="bg-white shadow-sm py-4">
         <nav className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
           <div className="w-full flex justify-between items-center">
-            <h1 className={`text-left text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
-              {t('title')}
-            </h1>
+            <Link href="/">
+              <h1 className={`cursor-pointer text-left text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
+                {t('title')}
+              </h1>
+            </Link>
             <div className="flex flex-wrap justify-center items-center gap-3 py-4">
               <button onClick={() => changeLanguage('kr')} className="lang-btn">🇰🇷 한국어</button>
               <button onClick={() => changeLanguage('jp')} className="lang-btn">🇯🇵 日本語</button>
