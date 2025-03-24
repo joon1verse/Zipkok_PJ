@@ -204,7 +204,7 @@ export default function Home() {
                 <div className="grid gap-4">
                   {pagedResults.map((item) => (
                     <div key={item.id} className="relative bg-white rounded-lg shadow p-4 flex gap-4">
-                      {/* 🔗 개별 공유 버튼 */}         // <-- 이 줄부터 추가
+                      {/* 🔗 개별 공유 버튼 */}
                         <button
                           onClick={() => {
                             const shareUrl = `${window.location.origin}/share/${item.id}`;
