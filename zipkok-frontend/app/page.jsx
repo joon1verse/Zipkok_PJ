@@ -67,34 +67,14 @@ export default function Home() {
     }
   }, [query, minPrice, maxPrice, selectedTypes]);
 
-  // 6️⃣ 검색 실행 핸들러 (API 연동 포함)
-const handleSearch = () => {
-  const trimmed = input.trim();
-  setQuery(trimmed);
-  setSuggestions([]);
-  setCurrentPage(1);
-
-  // 🔁 외부 API에서 게시글 가져오기
-  fetch("/api/daum")
-    .then((res) => res.json())
-    .then((data) => {
-      // 💡 필터 먼저 적용해서 results 저장
-      let filtered = data.filter(
-        (item) =>
-          item.title.toLowerCase().includes(trimmed.toLowerCase()) ||
-          item.location.toLowerCase().includes(trimmed.toLowerCase())
-      );
-      if (minPrice) filtered = filtered.filter((item) => item.priceValue >= parseInt(minPrice));
-      if (maxPrice) filtered = filtered.filter((item) => item.priceValue <= parseInt(maxPrice));
-      if (selectedTypes.length > 0) filtered = filtered.filter((item) => selectedTypes.includes(item.type));
-
-      setResults(filtered);
-      setShowResults(true);
-    })
-    .catch((err) => {
-      console.error("검색 실패:", err);
-    });
-};
+  // 6️⃣ 검색 실행 핸들러
+   const handleSearch = () => {
+     const trimmed = input.trim();
+     setQuery(trimmed);
+     setShowResults(true);
+     setSuggestions([]);
+     setCurrentPage(1); // 1️⃣6️⃣ 페이지 초기화
+   };
 
 
   // 7️⃣ 검색 결과 초기화 핸들러
