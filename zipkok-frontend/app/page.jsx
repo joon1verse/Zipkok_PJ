@@ -62,47 +62,32 @@ export default function Home() {
               {t('title')}
             </h1>
 
-              <div className="flex gap-2 items-center text-sm md:text-base">
+<div className="flex flex-wrap justify-center items-center gap-3 py-4">
   <button
-    className="flex items-center gap-1 px-2"
+    className="flex items-center gap-2 px-3 py-1 rounded-md bg-white hover:bg-gray-100 border border-gray-200 text-sm md:text-base font-medium transition"
     onClick={() => changeLanguage('kr')}
   >
-    <img
-      src="https://twemoji.maxcdn.com/v/latest/72x72/1f1f0-1f1f7.png"
-      alt="kr"
-      className="w-5 h-5"
-    />
-    한국어
+    <span className="text-xl leading-none">🇰🇷</span>
+    <span>한국어</span>
   </button>
 
-  <span className="text-gray-300">|</span>
-
   <button
-    className="flex items-center gap-1 px-2"
+    className="flex items-center gap-2 px-3 py-1 rounded-md bg-white hover:bg-gray-100 border border-gray-200 text-sm md:text-base font-medium transition"
     onClick={() => changeLanguage('jp')}
   >
-    <img
-      src="https://twemoji.maxcdn.com/v/latest/72x72/1f1ef-1f1f5.png"
-      alt="jp"
-      className="w-5 h-5"
-    />
-    日本語
+    <span className="text-xl leading-none">🇯🇵</span>
+    <span>日本語</span>
   </button>
-
-  <span className="text-gray-300">|</span>
 
   <button
-    className="flex items-center gap-1 px-2"
+    className="flex items-center gap-2 px-3 py-1 rounded-md bg-white hover:bg-gray-100 border border-gray-200 text-sm md:text-base font-medium transition"
     onClick={() => changeLanguage('en')}
   >
-    <img
-      src="https://twemoji.maxcdn.com/v/latest/72x72/1f1ec-1f1e7.png"
-      alt="en"
-      className="w-5 h-5"
-    />
-    English
+    <span className="text-xl leading-none">🇬🇧</span>
+    <span>English</span>
   </button>
 </div>
+
             
           </div>
         </nav>
