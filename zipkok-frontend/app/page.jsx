@@ -1,9 +1,10 @@
 "use client";
+
 import { useTranslation } from 'react-i18next';
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import Header from '../components/Header'; // ✅ 헤더 컴포넌트 불러오기
 
 // 다국어 리소스
 const resources = {
@@ -20,7 +21,7 @@ const resources = {
   },
   kr: {
     translation: {
-      title: "집콕 - Zipkok",
+      title: "집콕",
       slogan: "더 이상 힘들게 찾지 마세요.\n캐나다의 쉐어하우스, 홈스테이 정보를 한 곳에서!",
       description: "캐나다 여러 웹사이트의 렌트 리스트를 한곳에서 검색하세요.",
       placeholder: "도시 또는 지역으로 검색...",
@@ -31,7 +32,7 @@ const resources = {
   },
   jp: {
     translation: {
-      title: "ジプコク - Zipkok",
+      title: "ジプコク",
       slogan: "面倒な部屋探しは、もう終わり。\nカナダのルームシェア情報を一箇所で確認！",
       description: "複数のカナダのウェブサイトから賃貸情報を一括検索。",
       placeholder: "都市または地域で検索...",
@@ -95,28 +96,12 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
-      {/* 헤더 */}
-      <header className="bg-white shadow-sm py-4">
-        <nav className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
-          <div className="w-full flex justify-between items-center">
-            <Link href="/">
-              <h1 className="cursor-pointer text-3xl font-semibold text-indigo-700">
-                {t('title')}
-              </h1>
-            </Link>
-            <div className="flex flex-wrap justify-center items-center gap-3 py-4">
-              <button onClick={() => changeLanguage('kr')} className="lang-btn">🇰🇷 한국어</button>
-              <button onClick={() => changeLanguage('jp')} className="lang-btn">🇯🇵 日本語</button>
-              <button onClick={() => changeLanguage('en')} className="lang-btn">🇬🇧 English</button>
-            </div>
-          </div>
-        </nav>
-      </header>
+      
+      {/* ✅ 헤더 컴포넌트 */}
+      <Header changeLanguage={changeLanguage} langClass={langClass} />
 
-      {/* 메인 또는 검색 결과 */}
       <main className="container mx-auto py-12">
         {!showResults ? (
-          // 🔍 검색 페이지
           <section className="text-center px-4">
             <h2 className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight" style={{ lineHeight: '2' }}>
               {t('slogan')}
@@ -141,7 +126,6 @@ export default function Home() {
             </div>
           </section>
         ) : (
-          // 📄 결과 페이지
           <section className="px-4">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold">{t('resultTitle', { query })}</h2>
@@ -164,7 +148,6 @@ export default function Home() {
         )}
       </main>
 
-      {/* 푸터 */}
       <footer className="bg-white py-4 text-center shadow-inner">
         <p className="text-gray-500">&copy; 2025 Zipkok. All rights reserved.</p>
       </footer>
