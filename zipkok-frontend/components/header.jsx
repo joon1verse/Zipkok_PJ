@@ -1,23 +1,23 @@
 "use client";
-import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function Header({ changeLanguage, langClass }) {
   const { t } = useTranslation();
 
   return (
-    <header className="bg-white shadow-sm py-4">
-      <nav className="container mx-auto flex items-center justify-between px-4 md:px-8">
+    <header className="bg-white shadow-sm py-4 z-50 relative">
+      <nav className="container mx-auto flex justify-between items-center px-4 md:px-8">
 
-        {/* ✅ 링크 + a 태그 구조로 변경 */}
-        <Link href="/" passHref legacyBehavior>
-          <a className={`text-3xl font-semibold text-indigo-700 tracking-tight ${langClass} cursor-pointer`}>
-            {t('title')}
-          </a>
+        {/* ✅ 타이틀 링크 - 클릭 완벽 작동 */}
+        <Link href="/" className="cursor-pointer z-50">
+          <div className={`text-3xl font-semibold text-indigo-700 tracking-tight ${langClass}`}>
+            {t("title")}
+          </div>
         </Link>
 
-        {/* 언어 버튼 영역 */}
-        <div className="flex items-center gap-3">
+        {/* 언어 버튼 */}
+        <div className="flex items-center gap-3 z-40">
           {["kr", "jp", "en"].map((lang) => (
             <button
               key={lang}
