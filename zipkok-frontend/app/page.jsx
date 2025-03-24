@@ -112,7 +112,77 @@ export default function Home() {
             </div>
 
             {/* 9️⃣ 검색창 + 자동완성 드롭다운 */}
-            {/* ... 생략된 기존 검색창, 필터 UI, 검색 버튼 ... */}
+             <div className="relative max-w-xl mx-auto">
+               <input
+                 type="text"
+                 value={input}
+                 onChange={(e) => {
+                   const value = e.target.value;
+                   setInput(value);
+                   const filtered = cityList.filter((city) => city.name.toLowerCase().startsWith(value.toLowerCase()));
+                   setSuggestions(filtered);
+                 }}
+                 onFocus={() => setSuggestions(cityList)}
+                 onKeyDown={(e) => {
+                   if (e.key === "Enter") {
+                     e.preventDefault();
+                     handleSearch();
+                   }
+                 }}
+                 placeholder={t("placeholder")}
+                 className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
+               />
+ 
+               {suggestions.length > 0 && (
+                 <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow absolute w-full z-10 max-h-48 overflow-y-auto">
+                   {suggestions.map((city, index) => (
+                     <li
+                       key={city.name}
+                       onClick={() => {
+                         setInput(city.name);
+                         setSuggestions([]);
+                       }}
+                       className={`px-4 py-2 text-left hover:bg-indigo-100 cursor-pointer ${index < suggestions.length - 1 ? "border-b border-gray-200" : ""}`}
+                     >
+                       {city.name}, {city.province}
+                     </li>
+                   ))}
+                 </ul>
+               )}
+             </div>
+ 
+             {/* 🔟 필터 UI */}
+             <div className="mt-6 text-left max-w-xl mx-auto bg-white p-4 rounded-md shadow border border-gray-200">
+               <div className="grid grid-cols-2 gap-4 mb-4">
+                 <div>
+                   <label className="block text-sm font-medium text-gray-700">Min Price</label>
+                   <input type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="ex) 600" />
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-gray-700">Max Price</label>
+                   <input type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="ex) 1000" />
+                 </div>
+               </div>
+               <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                 <div className="flex gap-4 flex-wrap">
+                   {["House", "Apartment", "Condo"].map((type) => (
+                     <label key={type} className="flex items-center gap-2 text-sm">
+                       <input
+                         type="checkbox"
+                         value={type}
+                         checked={selectedTypes.includes(type)}
+                         onChange={(e) => {
+                           const checked = e.target.checked;
+                           setSelectedTypes((prev) => checked ? [...prev, type] : prev.filter((t) => t !== type));
+                         }}
+                       />
+                       {type}
+                     </label>
+                   ))}
+                 </div>
+               </div>
+             </div>
           </section>
         ) : (
           <section className="px-4">
