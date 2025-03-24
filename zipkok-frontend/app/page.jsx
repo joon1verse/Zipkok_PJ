@@ -1,17 +1,12 @@
 "use client";
 
-const cityList = [
-  "Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa",
-  "Edmonton", "Winnipeg", "Quebec City", "Hamilton", "Kitchener"
-];
+import { useTranslation } from "react-i18next";
+import { initReactI18next } from "react-i18next";
+import i18n from "i18next";
+import { useState, useEffect } from "react";
+import Header from "../components/header.jsx";
 
-import { useTranslation } from 'react-i18next';
-import { initReactI18next } from 'react-i18next';
-import i18n from 'i18next';
-import { useState, useEffect } from 'react';
-import Header from '../components/header.jsx'; // ✅ 헤더 컴포넌트 불러오기
-
-// 다국어 리소스
+// 🌎 다국어 리소스
 const resources = {
   en: {
     translation: {
@@ -50,22 +45,28 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'en',
-  interpolation: { escapeValue: false },
+  lng: "en",
+  interpolation: { escapeValue: false }
 });
 
 export default function Home() {
   const { t, i18n } = useTranslation();
+
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState([]);
 
+  const cityList = [
+    "Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa",
+    "Edmonton", "Winnipeg", "Quebec City", "Hamilton", "Kitchener"
+  ];
+
   const langClass = {
-    en: 'font-inter',
-    kr: 'font-noto-kr',
-    jp: 'font-noto-jp'
-  }[i18n.language] || 'font-inter';
+    en: "font-inter",
+    kr: "font-noto-kr",
+    jp: "font-noto-jp"
+  }[i18n.language] || "font-inter";
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -79,18 +80,19 @@ export default function Home() {
 
   useEffect(() => {
     if (query) {
-      const filtered = dummyData.filter(item =>
-        item.title.toLowerCase().includes(query.toLowerCase()) ||
-        item.location.toLowerCase().includes(query.toLowerCase())
+      const filtered = dummyData.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query.toLowerCase()) ||
+          item.location.toLowerCase().includes(query.toLowerCase())
       );
       setResults(filtered);
     }
   }, [query]);
 
   const handleSearch = () => {
-  const trimmed = input.trim();
-  setQuery(trimmed);
-  setShowResults(true);
+    const trimmed = input.trim();
+    setQuery(trimmed);
+    setShowResults(true);
   };
 
   const handleBack = () => {
@@ -101,61 +103,69 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
-      
-      {/* ✅ 헤더 컴포넌트 */}
       <Header changeLanguage={changeLanguage} langClass={langClass} />
 
       <main className="container mx-auto py-12">
         {!showResults ? (
           <section className="text-center px-4">
-            <h2 className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight" style={{ lineHeight: '2' }}>
-              {t('slogan')}
+            <h2
+              className="whitespace-pre-line text-2xl md:text-3xl font-semibold text-gray-800 mb-4 tracking-tight"
+              style={{ lineHeight: "2" }}
+            >
+              {t("slogan")}
             </h2>
             <p className="text-gray-600 mb-8 leading-relaxed">
-              {t('description')}
+              {t("description")}
             </p>
+
             <div className="max-w-xl mx-auto">
               <input
-  list="city-options"
-  type="text"
-  value={input}
-  onChange={(e) => setInput(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSearch(); // 🔥 엔터로 검색 실행
-    }
-  }}
-  placeholder={t('placeholder')}
-  className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
-/>
+                list="city-options"
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSearch();
+                  }
+                }}
+                placeholder={t("placeholder")}
+                className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
+              />
+              <datalist id="city-options">
+                {cityList.map((city) => (
+                  <option key={city} value={city} />
+                ))}
+              </datalist>
 
-<datalist id="city-options">
-  {cityList.map((city) => (
-    <option key={city} value={city} />
-  ))}
-</datalist>
               <button
-  onClick={handleSearch}
-  className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg"
->
-  {t('search')}
-</button>
-                {t('search')}
+                onClick={handleSearch}
+                className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg"
+              >
+                {t("search")}
               </button>
             </div>
           </section>
         ) : (
           <section className="px-4">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold">{t('resultTitle', { query })}</h2>
-              <button onClick={handleBack} className="text-sm text-indigo-600 underline">← Back</button>
+              <h2 className="text-2xl font-semibold">
+                {t("resultTitle", { query })}
+              </h2>
+              <button
+                onClick={handleBack}
+                className="text-sm text-indigo-600 underline"
+              >
+                ← Back
+              </button>
             </div>
+
             {results.length === 0 ? (
-              <p className="text-gray-500">{t('noResult')}</p>
+              <p className="text-gray-500">{t("noResult")}</p>
             ) : (
               <div className="grid gap-4">
-                {results.map(item => (
+                {results.map((item) => (
                   <div key={item.id} className="bg-white rounded-lg shadow p-4">
                     <h3 className="text-lg font-semibold">{item.title}</h3>
                     <p className="text-gray-600">{item.location}</p>
