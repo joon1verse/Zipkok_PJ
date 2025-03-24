@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useTranslation } from "react-i18next";
@@ -26,7 +27,7 @@ const resources = {
       description: "캐나다 여러 웹사이트의 렌트 리스트를 한곳에서 검색하세요.",
       placeholder: "도시 또는 지역으로 검색...",
       search: "검색",
-      resultTitle: '"{{query}}"의 검색 결과',
+      resultTitle: "\"{{query}}\"의 검색 결과",
       noResult: "검색 결과가 없습니다."
     }
   },
@@ -94,6 +95,7 @@ export default function Home() {
     const trimmed = input.trim();
     setQuery(trimmed);
     setShowResults(true);
+    setSuggestions([]);
   };
 
   const handleBack = () => {
@@ -119,56 +121,53 @@ export default function Home() {
               {t("description")}
             </p>
 
+            {/* Search box with autocomplete */}
             <div className="relative max-w-xl mx-auto">
-  <input
-    type="text"
-    value={input}
-    onChange={(e) => {
-      const value = e.target.value;
-      setInput(value);
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setInput(value);
+                  const filtered = cityList.filter((city) =>
+                    city.toLowerCase().startsWith(value.toLowerCase())
+                  );
+                  setSuggestions(filtered);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSearch();
+                  }
+                }}
+                placeholder={t("placeholder")}
+                className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
+              />
 
-      const filtered = cityList.filter((city) =>
-        city.toLowerCase().startsWith(value.toLowerCase())
-      );
-      setSuggestions(filtered);
-    }}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        setSuggestions([]);
-        handleSearch();
-      }
-    }}
-    placeholder={t("placeholder")}
-    className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
-  />
-
-  {/* 자동완성 드롭다운 */}
-  {suggestions.length > 0 && (
-    <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow absolute w-full z-10 max-h-48 overflow-y-auto">
-      {suggestions.map((city) => (
-        <li
-          key={city}
-          onClick={() => {
-            setInput(city);
-            setSuggestions([]);
-          }}
-          className="px-4 py-2 hover:bg-indigo-100 cursor-pointer"
-        >
-          {city}
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
-
-              <button
-                onClick={handleSearch}
-                className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg"
-              >
-                {t("search")}
-              </button>
+              {suggestions.length > 0 && (
+                <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow absolute w-full z-10 max-h-48 overflow-y-auto">
+                  {suggestions.map((city) => (
+                    <li
+                      key={city}
+                      onClick={() => {
+                        setInput(city);
+                        setSuggestions([]);
+                      }}
+                      className="px-4 py-2 hover:bg-indigo-100 cursor-pointer"
+                    >
+                      {city}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
+
+            <button
+              onClick={handleSearch}
+              className="mt-4 w-full rounded-lg bg-indigo-500 p-3 text-white font-semibold hover:bg-indigo-600 text-base md:text-lg"
+            >
+              {t("search")}
+            </button>
           </section>
         ) : (
           <section className="px-4">
