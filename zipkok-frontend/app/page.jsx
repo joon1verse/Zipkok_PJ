@@ -60,9 +60,17 @@ export default function Home() {
   const [suggestions, setSuggestions] = useState([]);
 
   const cityList = [
-    "Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa",
-    "Edmonton", "Winnipeg", "Quebec City", "Hamilton", "Kitchener"
-  ];
+  { name: "Toronto", province: "ON" },
+  { name: "Vancouver", province: "BC" },
+  { name: "Montreal", province: "QC" },
+  { name: "Calgary", province: "AB" },
+  { name: "Ottawa", province: "ON" },
+  { name: "Edmonton", province: "AB" },
+  { name: "Winnipeg", province: "MB" },
+  { name: "Quebec City", province: "QC" },
+  { name: "Hamilton", province: "ON" },
+  { name: "Kitchener", province: "ON" }
+];
 
   const langClass = {
     en: "font-inter",
@@ -124,40 +132,45 @@ export default function Home() {
             {/* Search box with autocomplete */}
             <div className="relative max-w-xl mx-auto">
               <input
-                type="text"
-                value={input}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setInput(value);
-                  const filtered = cityList.filter((city) =>
-                    city.toLowerCase().startsWith(value.toLowerCase())
-                  );
-                  setSuggestions(filtered);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleSearch();
-                  }
-                }}
-                placeholder={t("placeholder")}
-                className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
-              />
+  type="text"
+  value={input}
+  onChange={(e) => {
+    const value = e.target.value;
+    setInput(value);
 
-              {suggestions.length > 0 && (
+    const filtered = cityList.filter((city) =>
+      city.name.toLowerCase().startsWith(value.toLowerCase())
+    );
+    setSuggestions(filtered);
+  }}
+  onFocus={() => {
+    // 입력창을 클릭했을 때 전체 리스트 보여줌
+    setSuggestions(cityList);
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
+    }
+  }}
+  placeholder={t("placeholder")}
+  className="w-full rounded-lg border-2 border-gray-200 p-3 shadow-sm text-base md:text-lg"
+/>
+
+{suggestions.length > 0 && (
   <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow absolute w-full z-10 max-h-48 overflow-y-auto">
     {suggestions.map((city, index) => (
       <li
-        key={city}
+        key={city.name}
         onClick={() => {
-          setInput(city);
+          setInput(city.name);
           setSuggestions([]);
         }}
         className={`px-4 py-2 text-left hover:bg-indigo-100 cursor-pointer ${
           index < suggestions.length - 1 ? "border-b border-gray-200" : ""
         }`}
       >
-        {city}
+        {city.name}, {city.province}
       </li>
     ))}
   </ul>
