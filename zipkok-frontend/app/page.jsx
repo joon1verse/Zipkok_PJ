@@ -56,6 +56,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
   const cityList = [
     "Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa",
