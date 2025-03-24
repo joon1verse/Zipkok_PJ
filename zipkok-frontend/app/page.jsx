@@ -87,14 +87,6 @@ export default function Home() {
   const pagedResults = results.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const totalPages = Math.ceil(results.length / itemsPerPage);
 
-  // 1️⃣5️⃣ 공유 링크 복사 핸들러
-  const handleCopyLink = () => {
-    const currentUrl = window.location.href;
-    navigator.clipboard.writeText(currentUrl).then(() => {
-      alert("✅ 링크가 복사되었습니다!");
-    });
-  };
-
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
       <Header changeLanguage={changeLanguage} langClass={langClass} />
@@ -205,17 +197,22 @@ export default function Home() {
                   {pagedResults.map((item) => (
                     <div key={item.id} className="relative bg-white rounded-lg shadow p-4 flex gap-4">
                       {/* 🔗 개별 공유 버튼 */}
-                        <button
-                          onClick={() => {
-                            const shareUrl = `${window.location.origin}/share/${item.id}`;
-                            navigator.clipboard.writeText(shareUrl).then(() => {
-                              alert("🔗 게시물 링크가 복사되었습니다!");
-                            });
-                          }}
-                          className="absolute top-2 right-2 text-xs bg-gray-100 px-2 py-1 rounded hover:bg-gray-200"
-                        >
-                          공유
-                        </button>
+                        <div key={item.id} className="relative bg-white rounded-lg shadow p-4 flex gap-4">
+                          {/* 🔗 개별 공유 버튼 - 최우측 10% 공간 고정 + 심볼 적용 */}
+                          <div className="absolute top-1/2 -translate-y-1/2 right-2 w-[10%] flex justify-end">
+                            <button
+                              onClick={() => {
+                                const shareUrl = `${window.location.origin}/share/${item.id}`;
+                                navigator.clipboard.writeText(shareUrl).then(() => {
+                                  alert("🔗 게시물 링크가 복사되었습니다!");
+                                });
+                              }}
+                              className="text-lg p-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow"
+                              title="공유하기"
+                            >
+                              🔗
+                            </button>
+                          </div>
                       <img src={item.image} alt={item.title} className="w-32 h-24 object-cover rounded-md border border-gray-200" />
                       <div>
                         <h3 className="text-lg font-semibold">{item.title}</h3>
