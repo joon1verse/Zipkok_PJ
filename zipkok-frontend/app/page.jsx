@@ -86,6 +86,14 @@ export default function Home() {
 
   const pagedResults = results.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const totalPages = Math.ceil(results.length / itemsPerPage);
+  
+   // 1️⃣5️⃣ 공유 링크 복사 핸들러
+   const handleCopyLink = () => {
+     const currentUrl = window.location.href;
+     navigator.clipboard.writeText(currentUrl).then(() => {
+       alert("✅ 링크가 복사되었습니다!");
+     });
+   };
 
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
