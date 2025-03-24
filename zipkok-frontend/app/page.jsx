@@ -68,7 +68,7 @@ export default function Home() {
     onClick={() => changeLanguage('kr')}
   >
     <img
-      src="https://twemoji.maxcdn.com/v/latest/svg/1f1f0-1f1f7.svg"
+      src="https://twemoji.maxcdn.com/v/latest/72x72/1f1f0-1f1f7.png"
       alt="kr"
       className="w-5 h-5"
     />
@@ -82,7 +82,7 @@ export default function Home() {
     onClick={() => changeLanguage('jp')}
   >
     <img
-      src="https://twemoji.maxcdn.com/v/latest/svg/1f1ef-1f1f5.svg"
+      src="https://twemoji.maxcdn.com/v/latest/72x72/1f1ef-1f1f5.png"
       alt="jp"
       className="w-5 h-5"
     />
@@ -96,7 +96,7 @@ export default function Home() {
     onClick={() => changeLanguage('en')}
   >
     <img
-      src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg"
+      src="https://twemoji.maxcdn.com/v/latest/72x72/1f1ec-1f1e7.png"
       alt="en"
       className="w-5 h-5"
     />
