@@ -49,9 +49,9 @@ export default function Home() {
 
   // 4️⃣ 게시물 더미 데이터 (이미지 포함)
   const dummyData = [
-    { id: 1, title: "Toronto Downtown 쉐어하우스", location: "Toronto", price: "$700", priceValue: 700, type: "House", image: "/images/toronto.jpg" },
-    { id: 2, title: "Burnaby 넓은 하우스", location: "Burnaby", price: "$850", priceValue: 850, type: "Apartment", image: "/images/vancouver.jpg" },
-    { id: 3, title: "Vancouver Homestay", location: "Vancouver", price: "$950", priceValue: 950, type: "Condo", image: "/images/default.jpg" }
+    { id: 1, title: "Toronto Downtown 쉐어하우스", location: "Toronto", price: "$700", priceValue: 700, type: "House", image: "/images/default_toronto.jpg" },
+    { id: 2, title: "Burnaby 넓은 하우스", location: "Burnaby", price: "$850", priceValue: 850, type: "Apartment", image: "/images/default_vancouver.jpg" },
+    { id: 3, title: "Vancouver Homestay", location: "Vancouver", price: "$950", priceValue: 950, type: "Condo", image: "/images/default_vancouver.jpg" }
   ];
 
   // 5️⃣ 필터 포함 검색 결과 필터링
