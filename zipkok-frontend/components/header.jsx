@@ -9,14 +9,14 @@ export default function Header({ changeLanguage, langClass }) {
     <header className="bg-white shadow-sm py-4">
       <nav className="container mx-auto flex items-center justify-between px-4 md:px-8">
 
-        {/* ✅ 좌측: 타이틀 링크 */}
-        <Link href="/" className="block">
-          <span className={`text-3xl font-semibold text-indigo-700 tracking-tight ${langClass} cursor-pointer`}>
+        {/* ✅ 링크 + a 태그 구조로 변경 */}
+        <Link href="/" passHref legacyBehavior>
+          <a className={`text-3xl font-semibold text-indigo-700 tracking-tight ${langClass} cursor-pointer`}>
             {t('title')}
-          </span>
+          </a>
         </Link>
 
-        {/* 우측: 언어 버튼 */}
+        {/* 언어 버튼 영역 */}
         <div className="flex items-center gap-3">
           {["kr", "jp", "en"].map((lang) => (
             <button
