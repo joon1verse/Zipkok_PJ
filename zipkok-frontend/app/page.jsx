@@ -65,17 +65,17 @@ export default function Home() {
 
   // 6️⃣ 검색 실행 핸들러
   const handleSearch = () => {
-    const trimmed = input.trim();
+    const trimmed = input.trim().toLowerCase();
     setQuery(trimmed);
     setShowResults(true);
     setSuggestions([]);
     setCurrentPage(1);
-
-    let filtered = crawledData.filter(
-      (item) =>
-        item.title.toLowerCase().includes(trimmed.toLowerCase()) ||
-        (item.location && item.location.toLowerCase().includes(trimmed.toLowerCase()))
-    );
+  
+    // ✨ tag 기준 필터링
+    const filtered = crawledData.filter((item) => {
+      return item.tag?.toLowerCase() === trimmed;
+    });
+  
     setResults(filtered);
   };
 
