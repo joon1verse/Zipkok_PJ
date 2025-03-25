@@ -31,10 +31,16 @@ async function crawlDaum() {
 
     // (daum-6) 게시글 제목과 링크 추출
     $('.article_info').each((_, el) => {
+      const li = $(el).closest('li');
+    
+      // (공지 필터) 공지 아이콘이 포함되어 있는 경우
+      const isNotice = li.find('.ico_notice').length > 0;
+      if (isNotice) return;
+    
       const title = $(el).find('.txt_detail').text().trim();
       const href = $(el).closest('a').attr('href');
       const link = href ? 'https://m.cafe.daum.net' + href : null;
-
+    
       if (title && link) {
         rawPosts.push({
           title,
