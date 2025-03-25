@@ -1,0 +1,17 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.lang-btn {
+  @apply flex items-center gap-2 px-3 py-1 rounded-md bg-white hover:bg-gray-100 border border-gray-200 text-sm md:text-base font-medium transition focus:outline-none focus:ring-1 focus:ring-indigo-300;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
