@@ -80,20 +80,21 @@ export default function Home() {
     { name: "Kitchener", province: "ON" }
   ];
 
-  const langClass = { en: "font-inter", kr: "font-noto-kr", jp: "font-noto-jp" }[i18n.language] || "font-inter";
+  const langClass = {
+    en: "font-inter",
+    kr: "font-noto-kr",
+    jp: "font-noto-jp"
+  }[i18n.language] || "font-inter";
+
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     setShowLangModal(false);
   };
 
-  // 4️⃣ 더미 데이터 (백업용)
-  const dummyData = [
-    { id: 1, title: "Toronto Downtown 쉐어하우스", location: "Toronto", price: "$700", priceValue: 700, type: "House", image: "/images/default_toronto.jpg" },
-    { id: 2, title: "Burnaby 넓은 하우스", location: "Burnaby", price: "$850", priceValue: 850, type: "Apartment", image: "/images/default_vancouver.jpg" },
-    { id: 3, title: "Vancouver Homestay", location: "Vancouver", price: "$950", priceValue: 950, type: "Condo", image: "/images/default_vancouver.jpg" }
-  ];
+  // 4️⃣ 게시물 더미 데이터 (백업용)
+  const dummyData = [];
 
-  // 5️⃣ 크롤링 데이터 로딩
+  // 5️⃣ 크롤링 데이터 불러오기
   useEffect(() => {
     fetch("/data/raw_uvanu.json")
       .then((res) => res.json())
@@ -114,15 +115,10 @@ export default function Home() {
         item.title.toLowerCase().includes(trimmed.toLowerCase()) ||
         (item.location && item.location.toLowerCase().includes(trimmed.toLowerCase()))
     );
-
-    if (minPrice) filtered = filtered.filter((item) => item.priceValue >= parseInt(minPrice));
-    if (maxPrice) filtered = filtered.filter((item) => item.priceValue <= parseInt(maxPrice));
-    if (selectedTypes.length > 0) filtered = filtered.filter((item) => selectedTypes.includes(item.type));
-
     setResults(filtered);
   };
 
-  // 7️⃣ 검색 초기화
+  // 7️⃣ 검색 결과 초기화 핸들러
   const handleBack = () => {
     setShowResults(false);
     setInput("");
@@ -135,7 +131,18 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen bg-gray-50 ${langClass}`}>
-      {/* 언어 모달 */}
+      {/* 헤더 (언어 선택 팝업 버튼만) */}
+      <header className="flex justify-between items-center px-4 py-2 shadow bg-white">
+        <h1 className="text-xl font-bold">Zipkok</h1>
+        <button
+          onClick={() => setShowLangModal(true)}
+          className="text-sm border px-3 py-1 rounded hover:bg-gray-100"
+        >
+          🌐 {i18n.language === "kr" ? "한국어" : i18n.language === "jp" ? "日本語" : "Language"}
+        </button>
+      </header>
+
+      {/* 언어 선택 모달 */}
       {showLangModal && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 shadow-xl text-center space-y-4">
@@ -145,7 +152,9 @@ export default function Home() {
               <button onClick={() => changeLanguage("kr")} className="hover:underline">한국어</button>
               <button onClick={() => changeLanguage("jp")} className="hover:underline">日本語</button>
             </div>
-            <button onClick={() => setShowLangModal(false)} className="mt-4 text-sm text-gray-500 hover:underline">Close</button>
+            <button onClick={() => setShowLangModal(false)} className="mt-4 text-sm text-gray-500 hover:underline">
+              Close
+            </button>
           </div>
         </div>
       )}
