@@ -30,15 +30,15 @@ async function crawlDaum() {
     const rawPosts = [];
 
     // (daum-6) 게시글 제목과 링크 추출
-    $('.article_info').each((_, el) => {
-      const li = $(el).closest('li');
-    
-      // (공지 필터) 공지 아이콘이 포함되어 있는 경우
+    $('li').each((_, el) => {
+      const li = $(el);
+      
+      // (공지 필터) .ico_notice 클래스 포함된 span 존재 여부
       const isNotice = li.find('.ico_notice').length > 0;
       if (isNotice) return;
     
-      const title = $(el).find('.txt_detail').text().trim();
-      const href = $(el).closest('a').attr('href');
+      const title = li.find('.txt_detail').text().trim();
+      const href = li.find('a').attr('href');
       const link = href ? 'https://m.cafe.daum.net' + href : null;
     
       if (title && link) {
