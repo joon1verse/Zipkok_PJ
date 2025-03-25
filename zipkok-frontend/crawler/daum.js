@@ -15,6 +15,10 @@ async function crawlDaum() {
       },
     });
 
+    // ✅ HTML 저장 디버깅용
+    fs.writeFileSync('./data/daum_raw.html', html, 'utf-8');
+    console.log('[DEBUG] HTML 내용 저장 완료 → data/daum_raw.html');
+
     // ✅ [1] HTML 내용 확인
     console.log('[DEBUG] HTML 길이:', html.length);
     // console.log(html); // ← 주석 해제 시 HTML 전체 출력 가능
