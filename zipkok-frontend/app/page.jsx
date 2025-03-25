@@ -71,11 +71,15 @@ export default function Home() {
     setSuggestions([]);
     setCurrentPage(1);
   
-    // ✨ tag 기준 필터링
+    console.log("✅ 입력값:", trimmed);
+    console.log("✅ 전체 크롤링 데이터:", crawledData);
+  
     const filtered = crawledData.filter((item) => {
-      return item.tag?.toLowerCase() === trimmed;
+      const itemTag = item.tag?.toLowerCase();
+      return itemTag === trimmed;
     });
   
+    console.log("✅ 필터링된 결과:", filtered);
     setResults(filtered);
   };
 
