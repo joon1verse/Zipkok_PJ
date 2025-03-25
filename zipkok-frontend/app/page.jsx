@@ -28,6 +28,7 @@ export default function Home() {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // 1️⃣6️⃣ 페이징 상태
+  const [crawledData, setCrawledData] = useState([]);
   const itemsPerPage = 15;
 
   // 3️⃣ 도시 리스트 (자동완성용)
@@ -67,14 +68,32 @@ export default function Home() {
     }
   }, [query, minPrice, maxPrice, selectedTypes]);
 
+  // 크롤링 데이터 사용
+  useEffect(() => {
+    fetch("/data/raw_uvanu.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setCrawledData(data);
+      })
+      .catch((err) => console.error("크롤링 데이터 로드 실패:", err));
+  }, []);
+
   // 6️⃣ 검색 실행 핸들러
-   const handleSearch = () => {
-     const trimmed = input.trim();
-     setQuery(trimmed);
-     setShowResults(true);
-     setSuggestions([]);
-     setCurrentPage(1); // 1️⃣6️⃣ 페이지 초기화
-   };
+  const handleSearch = () => {
+    const trimmed = input.trim();
+    setQuery(trimmed);
+    setShowResults(true);
+    setSuggestions([]);
+    setCurrentPage(1); // 페이징 초기화
+  
+    // 🟢 검색 대상: 크롤링 데이터
+    let filtered = crawledData.filter(
+      (item) =>
+        item.title.toLowerCase().includes(trimmed.toLowerCase()) ||
+        (item.location && item.location.toLowerCase().includes(trimmed.toLowerCase()))
+    );
+    setResults(filtered);
+  };
 
 
   // 7️⃣ 검색 결과 초기화 핸들러
@@ -190,32 +209,39 @@ export default function Home() {
             ) : (
               <>
                 <div className="grid gap-4">
-                  {pagedResults.map((item) => (
-                    <div key={item.id} className="relative bg-white rounded-lg shadow p-4 flex gap-4">
-                          {/* 🔗 개별 공유 버튼 - 최우측 10% 공간 고정 + 심볼 적용 */}
-                          <div className="absolute top-1/2 -translate-y-1/2 right-2 w-[10%] flex justify-end">
-                            <button
-                              onClick={() => {
-                                const shareUrl = `${window.location.origin}/share/${item.id}`;
-                                navigator.clipboard.writeText(shareUrl).then(() => {
-                                  alert("🔗 게시물 링크가 복사되었습니다!");
-                                });
-                              }}
-                              className="text-lg p-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow"
-                              title="공유하기"
-                            >
-                              🔗
-                            </button>
-                          </div>
-                      <img src={item.image} alt={item.title} className="w-32 h-24 object-cover rounded-md border border-gray-200" />
-                      <div>
-                        <h3 className="text-lg font-semibold">{item.title}</h3>
-                        <p className="text-gray-600">{item.location}</p>
-                        <p className="text-indigo-500 font-medium">{item.price}</p>
-                        <p className="text-sm text-gray-400">{item.type}</p>
-                      </div>
+                {pagedResults.map((item) => (
+                  <div key={item.id} className="relative bg-white rounded-lg shadow p-4">
+                    {/* 🔗 개별 공유 버튼 - 우측 상단 */}
+                    <div className="absolute top-4 right-4">
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(item.link).then(() => {
+                            alert("🔗 게시물 링크가 복사되었습니다!");
+                          });
+                        }}
+                        className="text-lg p-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow"
+                        title="공유하기"
+                      >
+                        🔗
+                      </button>
                     </div>
-                  ))}
+                
+                    {/* 게시글 제목 */}
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-lg font-semibold text-indigo-600 hover:underline pr-10"
+                    >
+                      {item.title}
+                    </a>
+                
+                    {/* 출처 */}
+                    <p className="text-sm text-gray-400 mt-1">
+                      📌 {item.source || "출처 미상"}
+                    </p>
+                  </div>
+                ))}
                 </div>
                 
 
