@@ -49,6 +49,7 @@ async function crawlDaum() {
         });
       }
     });
+    
 
     // (daum-7) JSON 저장 처리
     if (!fs.existsSync('data')) fs.mkdirSync('data');
