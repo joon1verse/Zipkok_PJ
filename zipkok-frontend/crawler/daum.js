@@ -32,9 +32,10 @@ async function crawlDaum() {
     // (daum-6) 게시글 제목과 링크 추출
     $('li').each((_, el) => {
       const li = $(el);
-      
-      // (공지 필터) .ico_notice 클래스 포함된 span 존재 여부
-      const isNotice = li.find('.ico_notice').length > 0;
+    
+      // (공지 필터 v2) li 내부 전체 텍스트에 '공지' 포함 시 제외
+      const liText = li.text();
+      const isNotice = liText.includes('공지') || liText.includes('필독');
       if (isNotice) return;
     
       const title = li.find('.txt_detail').text().trim();
